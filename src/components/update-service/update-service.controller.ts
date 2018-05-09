@@ -136,7 +136,7 @@ export class UpdateServiceController implements angular.IController {
       this.originalPlan = _.find(this.ctrl.orderedPlans, (orderedPlan: any) => {
         return _.get(orderedPlan, 'metadata.name') === _.get(this.ctrl.serviceInstance, 'spec.clusterServicePlanRef.name');
       });
-
+      
       this.selectPlan(this.originalPlan);
     });
   };
@@ -203,6 +203,7 @@ export class UpdateServiceController implements angular.IController {
       // Clear any previous parameter data since each plan has its own parameter schema.
       this.ctrl.parameterData = {};
     }
+
     this.updateParameterSchema(plan);
 
     this.configChanged = !angular.equals(this.ctrl.parameterData, this.origParameterData) || (this.ctrl.selectedPlan !== this.originalPlan);
@@ -301,8 +302,7 @@ export class UpdateServiceController implements angular.IController {
 
   private updateParameterSchema(plan: any) {
     this.ctrl.parameterSchema = _.get(plan, 'spec.instanceUpdateParameterSchema');
-    this.ctrl.parameterFormDefinition = _.get(plan, 'spec.externalMetadata.schemas.service_instance.update.openshift_form_definition');
-
+    this.ctrl.parameterFormDefinition = _.get(plan, 'spec.externalMetadata.schemas.service_instance.create.openshift_form_definition');
     var updateProperties: any = _.get(this.ctrl.parameterSchema, 'properties');
     this.configStep.hidden = _.size(updateProperties) < 1;
 
